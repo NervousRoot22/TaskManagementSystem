@@ -2,7 +2,11 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/taskmanager
     username: postgres
-    password: your_password
+    password: postgres
+  security:
+    user:
+      name: postgres
+      password: postgres
   jpa:
     hibernate:
       ddl-auto: update
