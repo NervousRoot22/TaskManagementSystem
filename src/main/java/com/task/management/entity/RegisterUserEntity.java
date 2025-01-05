@@ -10,7 +10,7 @@ import lombok.Data;
 
 @Entity
 @Data
-public class UserEntity {
+public class RegisterUserEntity {
     @Id
     @Column(name="userName")
     @NotNull
@@ -21,6 +21,4 @@ public class UserEntity {
     @Size(min=8)
     @Column(name="password")
     private String password;
-    @Column(name="role")
-    private Role role;
 }
