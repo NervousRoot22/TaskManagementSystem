@@ -1,8 +1,6 @@
 package com.task.management.controller;
 
-import com.task.management.entity.LoginUserEntity;
-import com.task.management.entity.Role;
-import com.task.management.entity.RegisterUserEntity;
+import com.task.management.entity.UserEntity;
 import com.task.management.repository.UserRepository;
 import com.task.management.service.JwtUtilService;
 import jakarta.validation.Valid;
@@ -13,7 +11,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
-
 
 @RestController
 @RequestMapping("/api")
@@ -27,27 +24,23 @@ public class AuthenticationController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/auth/register")
-    public ResponseEntity<String> getUserRegister(@Valid @RequestBody RegisterUserEntity user, Error error) {
-        if(null == error) {
-            if (user != null && userRepository.existsById(user.getUserName())) {
-                return ResponseEntity.badRequest().body("User already exists.");
-            } else {
-                user.setPassword(passwordEncoder.encode(user.getPassword()));
-                userRepository.save(user);
-                return ResponseEntity.ok("User registered.");
-            }
+    public ResponseEntity<String> getUserRegister(@Valid @RequestBody UserEntity user) {
+        if (user != null && userRepository.existsById(user.getEmail())) {
+            return ResponseEntity.badRequest().body("User already exists.");
         } else {
-            return ResponseEntity.badRequest().body("Invalid Input");
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            userRepository.save(user);
+            return ResponseEntity.ok("User registered.");
         }
     }
 
     @PostMapping("/auth/login")
-    public ResponseEntity<String> getLogin(@RequestBody LoginUserEntity user) {
-        Optional<RegisterUserEntity> optionalUser = userRepository.findById(user.getUserName());
+    public ResponseEntity<String> getLogin(@Valid @RequestBody UserEntity user) {
+        final Optional<UserEntity> optionalUser = userRepository.findById(user.getEmail());
         if (optionalUser.isPresent()) {
-            RegisterUserEntity storedUser = optionalUser.get();
+            final UserEntity storedUser = optionalUser.get();
             if (passwordEncoder.matches(user.getPassword(), storedUser.getPassword())) {
-                String token = jwtUtilService.generateToken(user.getUserName());
+                String token = jwtUtilService.generateToken(user.getUserName(), user.getEmail());
                 return ResponseEntity.ok("Access Granted. Token: " + token);
             }
         }

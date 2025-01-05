@@ -40,22 +40,24 @@
         </dependency>
 
         <!-- JWT Dependencies -->
+        <!-- JWT Dependencies -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
-            <version>0.12.3</version>
+            <version>0.11.5</version>  <!-- Latest Stable Version -->
         </dependency>
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-impl</artifactId>
-            <version>0.12.3</version>
+            <version>0.11.5</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt-jackson</artifactId>
-            <version>0.12.3</version>
+            <artifactId>jjwt-jackson</artifactId>  <!-- For Jackson JSON parsing -->
+            <version>0.11.5</version>
         </dependency>
+
 
         <!-- PostgreSQL Driver -->
         <dependency>
